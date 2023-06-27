@@ -2,6 +2,7 @@ import { join } from 'path';
 import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
 import { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
 import FastifyJwt from '@fastify/jwt';
+import FastifyCors from '@fastify/cors';
 
 export type AppOptions = {
   // Place your custom options for app below here.
@@ -15,6 +16,11 @@ const app: FastifyPluginAsync<AppOptions> = async (
   opts
 ): Promise<void> => {
   // Place here your custom code!
+  const ALLOWED_DOMAINS = (process.env.ALLOWED_DOMAINS as string).split(',');
+  fastify.register(FastifyCors, {
+    origin: ALLOWED_DOMAINS,
+  });
+
   fastify.register(FastifyJwt, {
     secret: process.env.APP_AUTH_SECRET_KEY as string,
   });
