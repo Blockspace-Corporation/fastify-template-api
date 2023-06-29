@@ -30,6 +30,11 @@ export default class AuthRepository {
             data: {
               username: userData.username,
               password: hash,
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              email: userData.email,
+              contactNo: userData.contactNo,
+              address: userData.address,
             },
           });
         }

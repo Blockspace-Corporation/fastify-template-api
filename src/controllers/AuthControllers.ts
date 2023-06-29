@@ -54,10 +54,15 @@ export const registerHandler = async (
     !requestBody.username ||
     !requestBody.password ||
     !requestBody.confirmPassword ||
+    !requestBody.firstName ||
+    !requestBody.lastName ||
+    !requestBody.email ||
+    !requestBody.contactNo ||
+    !requestBody.address ||
     !requestBody
   ) {
     return reply.badRequest(
-      `Invalid request body. Required fields: 'username', 'password', 'confirmPassword'`
+      `Invalid request body. Required fields: 'username', 'password', 'confirmPassword', 'firstName', 'lastName', 'email', 'contactNo', 'address'`
     );
   }
 
@@ -84,6 +89,11 @@ export const registerHandler = async (
     AuthRepository.createUser({
       username: requestBody.username,
       password: requestBody.password,
+      firstName: requestBody.firstName,
+      lastName: requestBody.lastName,
+      email: requestBody.email,
+      contactNo: requestBody.contactNo,
+      address: requestBody.address,
     });
   } catch (error) {
     reply.internalServerError(String(error || 'Unknown error occurred.'));

@@ -14,6 +14,11 @@ export interface IUserRegisterRequestBody {
   username: string;
   password: string;
   confirmPassword: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  contactNo: string;
+  address: string;
 }
 export interface IUserRegisterResponseSucessful {
   message: string;
