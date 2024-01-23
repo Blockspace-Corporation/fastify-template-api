@@ -10,33 +10,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id			Int    @id @default(autoincrement())
-  username		String
-  password		String
-  firstName		String		@db.VarChar(255)
-  lastName		String		@db.VarChar(255)
-  email			String		@unique	@db.VarChar(255)
-  contactNo		String
-  address		String
+  id        Int    @id @default(autoincrement())
+  username  String
+  password  String
+  firstName String @db.VarChar(255)
+  lastName  String @db.VarChar(255)
+  email     String @unique @db.VarChar(255)
+  contactNo String
+  address   String
 }
 
 model AccessToken {
-  id			String		@id		@default(uuid())
-  token			String
-  expiry		DateTime
+  id     String   @id @default(uuid())
+  token  String
+  expiry DateTime
 }
 
 model company {
-  id        Int       @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   name      String
   employees employee[]
 }
 
 model employee {
-  id         Int      @id @default(autoincrement())
-  employee_id Int
-  company_id Int
-  company    company  @relation(fields: [company_id], references: [id])
+  id               Int                @id @default(autoincrement())
+  employee_id      Int
+  company_id       Int
+  company          company            @relation(fields: [company_id], references: [id])
+  employee_profile employee_profile[]
+}
+
+model employee_profile {
+  id            Int      @id @default(autoincrement())
+  employee_name String
+  position      String
+  salary        Decimal  @db.Decimal(12, 2)
+  employee_id   Int
+  employee      employee @relation(fields: [employee_id], references: [id])
 }
