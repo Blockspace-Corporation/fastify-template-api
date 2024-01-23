@@ -65,6 +65,18 @@ export default class AuthRepository {
       throw String(error || 'Unknown error occurred.');
     }
   }
+  static deleteUser = async (id:number) => {
+    try {
+      const deleteUser = await prisma.user.delete({
+        where:{
+          id:id
+        }
+      })
+      return deleteUser;
+    } catch (error) {
+      throw String(error || 'Unknown error occurred.');
+    }
+  }
   static createUser = async (userData: User) => {
     try {
       bcrypt.hash(

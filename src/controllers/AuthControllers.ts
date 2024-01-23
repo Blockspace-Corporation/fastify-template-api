@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as bcrypt from 'bcrypt';
 import { add, getUnixTime } from 'date-fns';
 import {
+  IUserID,
   IUserLoginRequestBody,
   IUserRegisterRequestBody,
 } from '../schemas/AuthSchemas';
@@ -149,6 +150,31 @@ export const updateUserHandler = async (
   } catch (error) {
     console.error(`updateLabelHandler: error trying to update label: ${error}`);
     reply.internalServerError(String(error || 'Unknown error occurred.'));
+  }
+};
+
+export const deleteUserHandler = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    const requestParams = request.params as IUserID;
+    requestParams.id = Number(requestParams.id);
+    if (!requestParams || !requestParams.id) {
+      return reply.badRequest(
+        "Missing or invalid request body. Required fields: 'id'"
+      );
+    }
+
+    await AuthRepository.deleteUser(requestParams.id);
+
+    return reply.send({
+      message: 'Label has been removed successfully.',
+    });
+
+  } catch (error) {
+    console.error(`deleteLabelHandler: error trying to update label: ${error}`);
+    reply.internalServerError(JSON.stringify(error));
   }
 };
 

@@ -5,6 +5,7 @@ import {
   registerHandler,
   readAllUsers,
   updateUserHandler,
+  deleteUserHandler,
 } from '../../controllers/AuthControllers';
 import {
   IUserLoginRequestBody,
@@ -35,6 +36,11 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     Querystring: FastifyRequest;
     Reply: FastifyReply;
   }>('/:id', { onRequest: [fastify.authenticate] }, updateUserHandler);
+  
+  fastify.delete<{
+    Querystring: FastifyRequest;
+    Reply: FastifyReply;
+  }>('/:id', { onRequest: [fastify.authenticate] }, deleteUserHandler);
 
   fastify.get<{
     Querystring: FastifyRequest;

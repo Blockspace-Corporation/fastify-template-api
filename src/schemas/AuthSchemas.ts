@@ -20,7 +20,9 @@ export interface IUserRegisterRequestBody {
   contactNo: string;
   address: string;
 }
-
+export interface IUserID {
+  id: number;
+}
 export interface IUserRegisterResponseSucessful {
   message: string;
 }
