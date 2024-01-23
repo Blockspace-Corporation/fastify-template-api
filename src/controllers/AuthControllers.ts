@@ -136,3 +136,19 @@ export const readAllUsers = async (
     reply.internalServerError(String(error || 'Unknown error occurred.'));
   }
 };
+
+export const updateUserHandler = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    const query = request.body as IUserRegisterRequestBody;
+    const targetLabel = await AuthRepository.updateUser(query);
+    return reply.send(targetLabel);
+
+  } catch (error) {
+    console.error(`updateLabelHandler: error trying to update label: ${error}`);
+    reply.internalServerError(String(error || 'Unknown error occurred.'));
+  }
+};
+

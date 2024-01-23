@@ -44,6 +44,27 @@ export default class AuthRepository {
       throw String(error || 'Unknown error occurred.');
     }
   }
+  static updateUser = async (userData: User)=>{
+    try{
+      const updateLabel = await prisma.user.update({
+        where: {
+          id: userData.id,
+        },
+        data: {
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          username: userData.username,
+          password: userData.password,
+          email: userData.email,
+          contactNo: userData.contactNo,
+          address: userData.address
+        },
+      });
+      return updateLabel;
+    }catch(error){
+      throw String(error || 'Unknown error occurred.');
+    }
+  }
   static createUser = async (userData: User) => {
     try {
       bcrypt.hash(

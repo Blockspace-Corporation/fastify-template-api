@@ -4,6 +4,7 @@ import {
   registerUserHandler,
   registerHandler,
   readAllUsers,
+  updateUserHandler,
 } from '../../controllers/AuthControllers';
 import {
   IUserLoginRequestBody,
@@ -29,6 +30,11 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     Querystring: IUserRegisterRequestBody;
     Reply: IUserRegisterResponseSucessful | IUserRegisterResponseError;
   }>('/register', registerHandler);
+
+  fastify.put<{
+    Querystring: FastifyRequest;
+    Reply: FastifyReply;
+  }>('/:id', { onRequest: [fastify.authenticate] }, updateUserHandler);
 
   fastify.get<{
     Querystring: FastifyRequest;
