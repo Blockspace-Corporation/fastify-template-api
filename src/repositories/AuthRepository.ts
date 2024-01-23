@@ -17,7 +17,33 @@ export default class AuthRepository {
 
     return targetUser;
   };
+  static registerUser = async (userData: User) => {
+    try{
+      const newUser = await prisma.user.create({
+        data: {
+          username: userData.username,
+          password: userData.password,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          contactNo: userData.contactNo,
+          address: userData.address,
+        },
+      });
+      return newUser;
+    }catch(error){
+      throw String(error || 'Unknown error occurred.');
+    }
+  }
+  static viewUser = async()=>{
+    try {
+      const allLabels = await prisma.user.findMany({})
 
+      return allLabels;
+    } catch (error) {
+      throw String(error || 'Unknown error occurred.');
+    }
+  }
   static createUser = async (userData: User) => {
     try {
       bcrypt.hash(

@@ -42,7 +42,21 @@ export const loginHandler =
       accessToken: newAccessToken,
     });
   };
-
+export const registerUserHandler = async(
+  request: FastifyRequest,
+  reply: FastifyReply
+)=>{
+  const requestBody = request.body as IUserRegisterRequestBody;
+  if(
+    !requestBody
+  ){
+    return reply.badRequest(
+      `Invalid request body. Required fields: 'username', 'password', 'confirmPassword', 'firstName', 'lastName', 'email', 'contactNo', 'address'`
+    );
+  }
+  const register = await AuthRepository.registerUser(requestBody);
+  return reply.send(register);
+}
 export const registerHandler = async (
   request: FastifyRequest,
   reply: FastifyReply
@@ -102,4 +116,23 @@ export const registerHandler = async (
   return reply.send({
     message: 'Registration successful.',
   });
+};
+
+export const readAllUsers = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+
+    const targetLabels = await AuthRepository.viewUser();
+
+    return reply.send({
+      labels: targetLabels,
+    });
+  } catch (error) {
+    console.error(
+      `readAllLabelsHandler: error trying to read labels: ${error}`
+    );
+    reply.internalServerError(String(error || 'Unknown error occurred.'));
+  }
 };
