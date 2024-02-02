@@ -77,6 +77,17 @@ export default class AuthRepository {
       throw String(error || 'Unknown error occurred.');
     }
   }
+
+  static getUserById = async (id: number) => {
+    const targetLabel = await prisma.user.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    return targetLabel;
+  };
+
   static createUser = async (userData: User) => {
     try {
       bcrypt.hash(

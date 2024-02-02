@@ -125,10 +125,10 @@ export const readAllUsers = async (
 ) => {
   try {
 
-    const targetLabels = await AuthRepository.viewUser();
+    const targetUsers = await AuthRepository.viewUser();
 
     return reply.send({
-      labels: targetLabels,
+      labels: targetUsers,
     });
   } catch (error) {
     console.error(
@@ -144,11 +144,36 @@ export const updateUserHandler = async (
 ) => {
   try {
     const query = request.body as IUserRegisterRequestBody;
-    const targetLabel = await AuthRepository.updateUser(query);
-    return reply.send(targetLabel);
+    const targetUser = await AuthRepository.updateUser(query);
+    return reply.send(targetUser);
 
   } catch (error) {
     console.error(`updateLabelHandler: error trying to update label: ${error}`);
+    reply.internalServerError(String(error || 'Unknown error occurred.'));
+  }
+};
+export const readOneUserHandler = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    const requestParams = request.params as IUserRegisterRequestBody;
+    requestParams.id = Number(requestParams.id);
+    if (!requestParams || !requestParams.id) {
+      return reply.badRequest("Missing 'id' parameter in URI 'auth/:id'");
+    }
+
+    const targetUser = await AuthRepository.getUserById(requestParams.id);
+
+    if (!targetUser) {
+      return reply.notFound('User not found.');
+    }
+
+    return reply.send ({
+      data: targetUser,
+    })
+  } catch (error) {
+    console.error(`readOneLabelHandler: error trying to read user: ${error}`);
     reply.internalServerError(String(error || 'Unknown error occurred.'));
   }
 };

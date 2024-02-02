@@ -11,6 +11,7 @@ export interface IUserLoginResponseError {
 }
 
 export interface IUserRegisterRequestBody {
+  id?: number;
   username: string;
   password: string;
   confirmPassword: string;

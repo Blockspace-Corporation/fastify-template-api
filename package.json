@@ -12,7 +12,9 @@
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
     "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",
-    "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js"
+    "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js",
+    "seed": "ts-node prisma/seed.ts",
+    "prisma:generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +25,7 @@
     "@fastify/jwt": "^7.0.0",
     "@fastify/sensible": "^5.0.0",
     "@prisma/client": "^4.15.0",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.1.1",
     "date-fns": "^2.30.0",
     "fastify": "^4.0.0",
     "fastify-cli": "^5.7.1",

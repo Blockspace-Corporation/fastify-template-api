@@ -6,6 +6,7 @@ import {
   readAllUsers,
   updateUserHandler,
   deleteUserHandler,
+  readOneUserHandler
 } from '../../controllers/AuthControllers';
 import {
   IUserLoginRequestBody,
@@ -46,6 +47,11 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     Querystring: FastifyRequest;
     Reply: FastifyReply
   }>('/', { onRequest: [fastify.authenticate] }, readAllUsers);
+
+  fastify.get<{
+    Querystring: FastifyRequest;
+    Reply: FastifyReply
+  }>('/:id', { onRequest: [fastify.authenticate] }, readOneUserHandler);
 };
 
 export default auth;
